@@ -19,21 +19,19 @@ function onInput(event) {
   //прибираємо з введеного тексту пробіли з початку і з кінця
   let inputText = event.target.value.trim();
   //якщо користувач очистив поле, то очищаємо результати пошуку
-  if(inputText===''){
+  if (inputText === '') {
     clear();
     return;
   }
 
   fetchCountries(inputText)
-    .then(data=> {
-      countries=data;
+    .then(countries  => {
       if (countries.length >= 10) {
         return infoMeesage();
       }
       render(countries);
     })
-    .catch(failMesaage);
-}
+    .catch(failMesaage)
 
 const markupOneCountryList = ({ name, flags }) => {
   return `<li>
@@ -52,7 +50,9 @@ const markupCountryInfo = ({ capital, population, languages }) => {
   return `<ul class="country-info-list">
     <li class="country-info-item"><p class="country-info-item-title">Capital:</p>${capital}</li>
     <li class="country-info-item"><p class="country-info-item-title">Population:</p>${population}</li>
-    <li class="country-info-item"><p class="country-info-item-title">Languages:</p>${Object.values(languages).join(', ')}</li>
+    <li class="country-info-item"><p class="country-info-item-title">Languages:</p>${Object.values(
+      languages
+    ).join(', ')}</li>
     </ul>`;
 };
 //Метод Object.values()повертає масив власних перерахованих значень властивостей даного об’єкта з рядковим ключем.
@@ -80,11 +80,13 @@ function clear() {
 }
 //--Якщо у відповіді бекенд повернув більше ніж 10 країн, в інтерфейсі з'являється повідомлення про те, що назва повинна бути специфічнішою.
 function infoMeesage() {
+  clear();
   return Notify.info(
     'Too many matches found. Please enter a more specific name.'
   );
 }
 //--Якщо користувач ввів назву країни, якої не існує, бекенд поверне не порожній масив, а помилку зі статус кодом 404 - не знайдено.
 function failMesaage() {
+  clear();
   return Notify.failure('Oops, there is no country with that name');
 }
