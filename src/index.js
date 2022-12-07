@@ -12,11 +12,24 @@ const refs = {
 //--Необхідно застосувати прийом Debounce на обробнику події і робити HTTP-запит через 300мс після того, як користувач перестав вводити текст.
 const DEBOUNCE_DELAY = 300;
 refs.input.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
+console.log(refs.input)
+console.log(5)
+let countries = [];
 
 function onInput(event) {
-    event.preventDefault();
-    
+  event.preventDefault();
+  //прибираємо з введеного тексту пробіли з початку і з кінця
+  let inputText = event.target.value.trim();
 
+  fetchCountries(inputText)
+    .then(data=> {
+      countries=data;
+      if (countries.length >= 10) {
+        return infoMeesage();
+      }
+      render(countries);
+    })
+    .catch(failMesaage);
 }
 
 const markupOneCountryList = ({ name, flags }) => {
@@ -42,19 +55,18 @@ const markupCountryInfo = ({ capital, population, languages }) => {
 
 //додаємо данні в розмітку
 function render(countries) {
+  const country = countries.map(markupCountryList);
+  const oneCountry = countries.map(markupOneCountryList);
+  const countryInfo = countries.map(markupCountryInfo);
 
-    const country = countries.map(markupCountryList);
-    const oneCountry = countries.map(markupOneCountryList);
-    const countryInfo = countries.map(markupCountryInfo);
-
-    if (countries.length === 1) {
-        clear();
-        refs.countryList.insertAdjacentHTML('beforeend', oneCountry.join(''));
-        refs.countryInfo.insertAdjacentHTML('beforeend', countryInfo.join(''));
-    } else {
-        clear();
-        refs.countryList.insertAdjacentHTML('beforeend', country.join(''));
-    }
+  if (countries.length === 1) {
+    // clear();
+    refs.countryList.insertAdjacentHTML('beforeend', oneCountry.join(''));
+    refs.countryInfo.insertAdjacentHTML('beforeend', countryInfo.join(''));
+  } else {
+    // clear();
+    refs.countryList.insertAdjacentHTML('beforeend', country.join(''));
+  }
 }
 
 //--Якщо користувач повністю очищає поле пошуку, то HTTP-запит не виконується, а розмітка списку країн або інформації про країну зникає.
