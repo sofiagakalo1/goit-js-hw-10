@@ -18,6 +18,7 @@ function onInput(event) {
   event.preventDefault();
   //прибираємо з введеного тексту пробіли з початку і з кінця
   let inputText = event.target.value.trim();
+  //якщо користувач очистив поле, то очищаємо результати пошуку
   if(inputText===''){
     clear();
     return;
@@ -36,7 +37,7 @@ function onInput(event) {
 
 const markupOneCountryList = ({ name, flags }) => {
   return `<li>
-      <img src="${flags.svg}" width=30; height=20; alt="${name.official}"></img>
+      <img src="${flags.svg}" class="oneCountryFlag-picture" alt="${name.official}"></img>
       <span class="OneCountryList-title">${name.official}</span>
     </li>`;
 };
@@ -48,12 +49,13 @@ const markupCountryList = ({ name, flags }) => {
     </li>`;
 };
 const markupCountryInfo = ({ capital, population, languages }) => {
-  return `<ul>
+  return `<ul class="country-info-list">
     <li class="country-info-item"><p class="country-info-item-title">Capital:</p>${capital}</li>
     <li class="country-info-item"><p class="country-info-item-title">Population:</p>${population}</li>
-    <li class="country-info-item"><p class="country-info-item-title">Languages:</p>${languages}</li>
+    <li class="country-info-item"><p class="country-info-item-title">Languages:</p>${Object.values(languages).join(', ')}</li>
     </ul>`;
 };
+//Метод Object.values()повертає масив власних перерахованих значень властивостей даного об’єкта з рядковим ключем.
 
 //додаємо данні в розмітку
 function render(countries) {
