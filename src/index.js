@@ -43,8 +43,8 @@ const markupOneCountryList = ({ name, flags }) => {
 };
 
 const markupCountryList = ({ name, flags }) => {
-  return `<li>
-      <img src="${flags.svg}" width=30; height=20; alt="${name.official}"></img>
+  return `<li class="country-list-item">
+      <img src="${flags.svg}" class="countryFlag-picture" alt="${name.official}"></img>
       <span>${name.official}</span>
     </li>`;
 };
